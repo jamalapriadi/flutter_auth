@@ -4,11 +4,13 @@ import 'package:flutter_login/models/auth/login/login_request.dart';
 import 'package:flutter_login/models/auth/password/password_request.dart';
 import 'package:flutter_login/models/auth/register/register_request.dart';
 import 'package:flutter_login/repositories/auth_repository.dart';
+import 'package:flutter_login/repositories/me_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(InitialAuthState());
 
   AuthRepository authRepository = AuthRepository();
+  MeRepository meRepository = MeRepository();
 
   void login(String username, String password) async {
     emit(LoadingAuthState());
@@ -36,7 +38,15 @@ class AuthCubit extends Cubit<AuthState> {
     bool isLogin = await authRepository.cekIsLogin();
 
     if (isLogin == true) {
-      emit(AvailableAuthState());
+      //check if token expired or not
+      emit(CekLoginStatusState());
+      meRepository.cekToken().then((resp) async {
+        if (resp == 200) {
+          emit(AvailableAuthState());
+        } else {
+          emit(FailureAuthState('Login Gagal'));
+        }
+      });
     } else {
       emit(FailureAuthState('Login Gagal'));
     }

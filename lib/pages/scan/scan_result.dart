@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/components/button_widget.dart';
-import 'package:flutter_login/components/logo.dart';
 import 'package:flutter_login/helpers/constant.dart';
 
 // ignore: must_be_immutable
@@ -14,7 +13,6 @@ class ScanResult extends StatefulWidget {
 
 class _ScanResultState extends State<ScanResult> {
   final scaffoldState = GlobalKey<FormState>();
-  final _formKey = GlobalKey<FormState>();
   final formState = GlobalKey<FormState>();
 
   @override
@@ -118,8 +116,7 @@ class _ScanResultState extends State<ScanResult> {
                               indent: 10,
                               endIndent: 10,
                             ),
-                            Container(
-                                child: ListView(
+                            ListView(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               children: [
@@ -190,7 +187,7 @@ class _ScanResultState extends State<ScanResult> {
                                   endIndent: 10,
                                 ),
                               ],
-                            ))
+                            )
                           ]),
                       const SizedBox(
                         height: 10,

@@ -5,6 +5,7 @@ import 'package:flutter_login/models/auth/default_response.dart';
 import 'package:flutter_login/models/auth/me/me_response.dart';
 import 'package:flutter_login/models/auth/me/password/update_password_request.dart';
 import 'package:flutter_login/models/auth/me/profile/update_profile_request.dart';
+import 'package:flutter_login/models/auth/me/token_response.dart';
 
 class MeRepository {
   final network = Network();
@@ -17,6 +18,14 @@ class MeRepository {
     final response = await network.getRequest(url);
 
     return meResponseFromJson(response.body);
+  }
+
+  Future<dynamic> cekToken() async {
+    var url = urlApi + "/auth/me";
+
+    final response = await network.getRequest(url);
+
+    return response.statusCode;
   }
 
   Future<DefaultResponse> updatePassword(UpdatePasswordRequest request) async {

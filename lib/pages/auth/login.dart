@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/components/button_widget.dart';
+import 'package:flutter_login/components/loading_widget.dart';
 import 'package:flutter_login/components/logo.dart';
 import 'package:flutter_login/components/password_form_field_widget.dart';
 import 'package:flutter_login/components/text_form_field_widget.dart';
 import 'package:flutter_login/cubit/auth/auth_cubit.dart';
 import 'package:flutter_login/cubit/auth/auth_state.dart';
 import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/pages/home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -76,6 +76,12 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ));
+              } else if (state is CekLoginStatusState) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => const AlertDialog(
+                          title: Text("Loading"),
+                        ));
               } else if (state is SuccessAuthState) {
                 if (state.loginResponse.success == true) {
                   Navigator.pushReplacementNamed(context, "/home");
@@ -140,6 +146,8 @@ class _LoginState extends State<Login> {
                         child: CircularProgressIndicator(),
                       ),
                     );
+                  } else if (state is CekLoginStatusState) {
+                    return const LoadingWidget();
                   } else {
                     return Container();
                   }

@@ -49,6 +49,8 @@ class InitialRegisterState extends AuthState {}
 
 class LoadingRegisterState extends AuthState {}
 
+class CekLoginStatusState extends AuthState {}
+
 class FailureRegisterState extends AuthState {
   final String errorMessage;
 

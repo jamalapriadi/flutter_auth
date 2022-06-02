@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/components/button_widget.dart';
 import 'package:flutter_login/components/logo.dart';
 import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/pages/scan/scan_result.dart';
 
 class TabHome extends StatefulWidget {
   const TabHome({Key? key}) : super(key: key);
@@ -66,7 +64,7 @@ class _TabHomeState extends State<TabHome> {
           ),
           Padding(
               padding: const EdgeInsets.all(10),
-              child: Container(
+              child: SizedBox(
                   height: 200,
                   child: ListView(
                     scrollDirection: Axis.vertical,
@@ -153,30 +151,8 @@ class _TabHomeState extends State<TabHome> {
           const SizedBox(
             height: 20,
           ),
-          // _buildSearchDetail()
         ],
       ),
-    );
-  }
-
-  Widget _buildSearchDetail() {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: elevatedButton(
-          onPresses: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ScanResult(q: 'q'),
-              ),
-            );
-          },
-          text: "Register",
-          winWidth: 14,
-          height: 21,
-          textSize: 18,
-          color: Warna.abu),
     );
   }
 }
