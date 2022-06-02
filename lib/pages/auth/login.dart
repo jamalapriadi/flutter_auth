@@ -76,12 +76,6 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ));
-              } else if (state is CekLoginStatusState) {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) => const AlertDialog(
-                          title: Text("Loading"),
-                        ));
               } else if (state is SuccessAuthState) {
                 if (state.loginResponse.success == true) {
                   Navigator.pushReplacementNamed(context, "/home");
@@ -140,13 +134,6 @@ class _LoginState extends State<Login> {
                 ),
                 BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
                   if (state is LoadingAuthState) {
-                    return Container(
-                      color: Colors.black.withOpacity(.5),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else if (state is CekLoginStatusState) {
                     return const LoadingWidget();
                   } else {
                     return Container();
