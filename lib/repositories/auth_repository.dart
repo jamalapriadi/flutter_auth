@@ -57,4 +57,12 @@ class AuthRepository {
   Future<String> getAccessToken() async {
     return await Cache.getCache(key: accessToken);
   }
+
+  Future<bool> setMerchant(String id) async {
+    return await Cache.setCache(key: merchantId, data: id);
+  }
+
+  Future<String> getMerchantId() async {
+    return await Cache.getCache(key: merchantId);
+  }
 }

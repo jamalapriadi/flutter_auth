@@ -21,7 +21,6 @@ class AuthCubit extends Cubit<AuthState> {
         LoginRequest(username: username, password: password, source: "login");
 
     authRepository.login(loginRequest).then((resp) async {
-      // ignore: unrelated_type_equality_checks
       if (resp.success == true) {
         authRepository.setIsLogin(true);
         authRepository.setToken(resp.accessToken.toString());

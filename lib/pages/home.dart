@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    profileCubit.me();
     super.initState();
   }
 
@@ -37,131 +36,84 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Widget _buildAppBar() {
-    return BlocProvider<ProfileCubit>(
-      create: (context) => profileCubit,
-      child: BlocListener<ProfileCubit, ProfileState>(
-        listener: (context, state) {},
-        child: BlocBuilder<ProfileCubit, ProfileState>(
-          builder: (context, state) {
-            if (state is GetProfileState) {
-              return Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Welcome",
-                      style: TextStyle(fontSize: 14, color: Warna.abu),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      state.meResponse.name.toString(),
-                      style: TextStyle(color: Warna.abu, fontSize: 18),
-                    ),
-                  )
-                ],
-              );
-            } else if (state is LoadingGetProfileState) {
-              return Container(
-                color: Colors.black.withOpacity(0.2),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: SafeArea(
-        child: Scaffold(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Warna.putih,
+        appBar: AppBar(
           backgroundColor: Warna.putih,
-          appBar: AppBar(
-            backgroundColor: Warna.putih,
-            elevation: 0,
-            // leading: Padding(
-            //   padding: const EdgeInsets.all(10),
-            //   child: Image.asset('assets/img/logo.png'),
-            // ),
-            toolbarHeight: 60,
-            title: _buildAppBar(),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  color: Warna.abu,
-                ),
-                tooltip: 'Logout',
-                onPressed: () {
-                  logout();
-                },
+          elevation: 0,
+          // leading: Padding(
+          //   padding: const EdgeInsets.all(10),
+          //   child: Image.asset('assets/img/logo.png'),
+          // ),
+          toolbarHeight: 60,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.logout,
+                color: Warna.abu,
               ),
-            ],
-          ),
-          body: _children[selectedIndex],
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const ScanQR()));
-            },
-            tooltip: "Scan QR",
-            backgroundColor: Warna.biru,
-            child: Container(
-              margin: const EdgeInsets.all(15),
-              child: const Icon(Icons.qr_code_scanner),
+              tooltip: 'Logout',
+              onPressed: () {
+                logout();
+              },
             ),
-            elevation: 4,
+          ],
+        ),
+        body: _children[selectedIndex],
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => const ScanQR()));
+          },
+          tooltip: "Scan QR",
+          backgroundColor: Warna.biru,
+          child: Container(
+            margin: const EdgeInsets.all(15),
+            child: const Icon(Icons.qr_code_scanner),
           ),
-          bottomNavigationBar: BottomAppBar(
-            child: Container(
-              height: 60,
-              margin: const EdgeInsets.only(left: 42, right: 42),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        updateTabSelection(0, "Home");
-                      },
-                      iconSize: 27.0,
-                      icon: Icon(
-                        Icons.home,
-                        color: selectedIndex == 0
-                            ? Warna.putih
-                            : Colors.grey.shade400,
-                      )),
-                  IconButton(
-                      onPressed: () {
-                        updateTabSelection(1, "Settings");
-                      },
-                      iconSize: 27.0,
-                      icon: Icon(
-                        Icons.settings,
-                        color: selectedIndex == 1
-                            ? Warna.putih
-                            : Colors.grey.shade400,
-                      ))
-                ],
-              ),
+          elevation: 4,
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            height: 60,
+            margin: const EdgeInsets.only(left: 42, right: 42),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      updateTabSelection(0, "Home");
+                    },
+                    iconSize: 27.0,
+                    icon: Icon(
+                      Icons.home,
+                      color: selectedIndex == 0
+                          ? Warna.putih
+                          : Colors.grey.shade400,
+                    )),
+                IconButton(
+                    onPressed: () {
+                      updateTabSelection(1, "Settings");
+                    },
+                    iconSize: 27.0,
+                    icon: Icon(
+                      Icons.settings,
+                      color: selectedIndex == 1
+                          ? Warna.putih
+                          : Colors.grey.shade400,
+                    ))
+              ],
             ),
-            shape: const CircularNotchedRectangle(),
-            color: Warna.hijau,
           ),
+          shape: const CircularNotchedRectangle(),
+          color: Warna.hijau,
         ),
       ),
     );

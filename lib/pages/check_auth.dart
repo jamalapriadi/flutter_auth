@@ -5,6 +5,7 @@ import 'package:flutter_login/cubit/auth/auth_cubit.dart';
 import 'package:flutter_login/cubit/auth/auth_state.dart';
 import 'package:flutter_login/pages/auth/login.dart';
 import 'package:flutter_login/pages/home.dart';
+import 'package:flutter_login/pages/merchant/merchant.dart';
 
 class CheckAuth extends StatefulWidget {
   const CheckAuth({Key? key}) : super(key: key);
@@ -38,7 +39,8 @@ class _CheckAuthState extends State<CheckAuth> {
             } else if (state is CekLoginStatusState) {
               return const LoadingWidget();
             } else if (state is AvailableAuthState) {
-              return const Home();
+              // return const Home();
+              return const Merchant();
             } else {
               return const Login();
             }

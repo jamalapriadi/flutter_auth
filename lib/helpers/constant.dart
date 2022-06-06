@@ -20,4 +20,5 @@ class Warna {
   static Color biru = HexColor("#0082c6");
   static Color abu = HexColor("#404041");
   static Color abumuda = HexColor("#e5e5e5");
+  static Color merah = HexColor("#DE362B");
 }

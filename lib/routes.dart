@@ -3,6 +3,7 @@ import 'package:flutter_login/pages/auth/login.dart';
 import 'package:flutter_login/pages/auth/password.dart';
 import 'package:flutter_login/pages/auth/register.dart';
 import 'package:flutter_login/pages/home.dart';
+import 'package:flutter_login/pages/merchant/merchant.dart';
 import 'package:flutter_login/pages/splash.dart';
 
 class RouteGenerator {
@@ -15,6 +16,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const Login());
       case "/splash":
         return MaterialPageRoute(builder: (_) => const Splash());
+      case "/merchant":
+        return MaterialPageRoute(builder: (_) => const Merchant());
       case "/login":
         return MaterialPageRoute(builder: (_) => const Login());
       case "/register":

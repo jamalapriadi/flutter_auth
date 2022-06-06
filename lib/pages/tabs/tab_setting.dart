@@ -25,7 +25,7 @@ class _TabSettingState extends State<TabSetting> {
 
   @override
   void initState() {
-    profileCubit.me();
+    profileCubit.getMe();
     super.initState();
   }
 

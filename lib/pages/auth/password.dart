@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/components/button_widget.dart';
 import 'package:flutter_login/components/loading_widget.dart';
+import 'package:flutter_login/components/logo.dart';
 import 'package:flutter_login/components/text_form_field_widget.dart';
 import 'package:flutter_login/cubit/auth/auth_cubit.dart';
 import 'package:flutter_login/cubit/auth/auth_state.dart';
@@ -61,6 +62,10 @@ class _PasswordState extends State<Password> {
                         children: [
                           const SizedBox(
                             height: 48,
+                          ),
+                          const LogoWidget(),
+                          const SizedBox(
+                            height: 20,
                           ),
                           _buildUsername(),
                           const SizedBox(

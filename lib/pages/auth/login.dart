@@ -28,37 +28,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final shouldPop = await showDialog<bool>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Do you want to go back?'),
-              actionsAlignment: MainAxisAlignment.spaceBetween,
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                  child: const Text('Yes'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: const Text('No'),
-                ),
-              ],
-            );
-          },
-        );
-        return shouldPop!;
-      },
+    return SafeArea(
       child: Scaffold(
         key: _formKey,
         resizeToAvoidBottomInset: false,
-        backgroundColor: Warna.putih,
         body: BlocProvider<AuthCubit>(
           create: (context) => authCubit,
           child: BlocListener<AuthCubit, AuthState>(
@@ -78,7 +51,8 @@ class _LoginState extends State<Login> {
                         ));
               } else if (state is SuccessAuthState) {
                 if (state.loginResponse.success == true) {
-                  Navigator.pushReplacementNamed(context, "/home");
+                  // Navigator.pushReplacementNamed(context, "/home");
+                  Navigator.pushReplacementNamed(context, "/merchant");
                 } else {
                   showDialog<String>(
                       context: context,
@@ -107,7 +81,7 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           const SizedBox(
-                            height: 48.0,
+                            height: 60.0,
                           ),
                           const Center(
                             child: LogoWidget(),

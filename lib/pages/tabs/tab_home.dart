@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_login/components/button_widget.dart';
 import 'package:flutter_login/components/logo.dart';
+import 'package:flutter_login/cubit/merchant/merchant_cubit.dart';
+import 'package:flutter_login/cubit/merchant/merchant_state.dart';
+import 'package:flutter_login/cubit/profile/profile_cubit.dart';
+import 'package:flutter_login/cubit/profile/profile_state.dart';
 import 'package:flutter_login/helpers/constant.dart';
+import 'package:flutter_login/models/auth/me/me_response.dart';
+import 'package:flutter_login/pages/scan/scan_result.dart';
 
 class TabHome extends StatefulWidget {
   const TabHome({Key? key}) : super(key: key);
@@ -10,6 +18,17 @@ class TabHome extends StatefulWidget {
 }
 
 class _TabHomeState extends State<TabHome> {
+  ProfileCubit profileCubit = ProfileCubit();
+  MerchantCubit merchantCubit = MerchantCubit();
+  MeResponse meResponse = MeResponse();
+
+  @override
+  void initState() {
+    profileCubit.getMe();
+    merchantCubit.getMerchantById();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -18,6 +37,17 @@ class _TabHomeState extends State<TabHome> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const LogoWidget(),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: _buildNamaUser(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: _buildMerchant(),
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -149,9 +179,116 @@ class _TabHomeState extends State<TabHome> {
                     ],
                   ))),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
+          _buildButtonRegister()
         ],
+      ),
+    );
+  }
+
+  Widget _buildButtonRegister() {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: elevatedButton(
+          onPresses: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => ScanResult(
+                          q: 'MC-05302',
+                        )));
+          },
+          text: "Register",
+          winWidth: 14,
+          height: 21,
+          textSize: 18,
+          color: Warna.abu),
+    );
+  }
+
+  Widget _buildNamaUser() {
+    return BlocProvider<ProfileCubit>(
+      create: (context) => profileCubit,
+      child: BlocListener<ProfileCubit, ProfileState>(
+        listener: (context, state) {},
+        child: BlocBuilder<ProfileCubit, ProfileState>(
+          builder: (context, state) {
+            if (state is GetProfileState) {
+              return Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "User",
+                          style: TextStyle(fontSize: 18, color: Warna.abu),
+                        ),
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          " : " +
+                              state.meResponse.name.toString().toUpperCase(),
+                          style: TextStyle(
+                              color: Warna.abu,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ))
+                ],
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMerchant() {
+    return BlocProvider<MerchantCubit>(
+      create: (context) => merchantCubit,
+      child: BlocListener<MerchantCubit, MerchantState>(
+        listener: (context, state) {},
+        child: BlocBuilder<MerchantCubit, MerchantState>(
+          builder: (context, state) {
+            if (state is GetMerchantByIdState) {
+              return Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Location : ",
+                          style: TextStyle(fontSize: 18, color: Warna.abu),
+                        ),
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          " : " + state.merchantResponse.nama.toString(),
+                          style: TextStyle(
+                              color: Warna.abu,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ))
+                ],
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

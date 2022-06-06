@@ -14,6 +14,13 @@ class ProfileCubit extends Cubit<ProfileState> {
     await Future.delayed(const Duration(seconds: 3));
 
     meRepository.me().then((resp) async {
+      meRepository.setMe(resp);
+      emit(GetProfileState(resp));
+    });
+  }
+
+  void getMe() async {
+    meRepository.getMe().then((resp) async {
       emit(GetProfileState(resp));
     });
   }

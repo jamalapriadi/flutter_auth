@@ -46,93 +46,134 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      key: scaffoldState,
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Warna.putih,
-      body: BlocProvider<AuthCubit>(
-        create: (context) => authCubit,
-        child: BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state is FailureRegisterState) {
-              showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Warning'),
-                        content: Text(state.errorMessage),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ));
-            } else if (state is SuccessRegisterState) {
-              _clearText();
-            }
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Apakah anda yakin ingin kembali?'),
+              actionsAlignment: MainAxisAlignment.spaceBetween,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, "/login");
+                  },
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: const Text('No'),
+                ),
+              ],
+            );
           },
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Form(
-                  key: formState,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.all(10),
-                    child: Column(
+        );
+        return shouldPop!;
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SafeArea(
+            child: Scaffold(
+          key: scaffoldState,
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Warna.putih,
+          body: BlocProvider<AuthCubit>(
+            create: (context) => authCubit,
+            child: BlocListener<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is FailureRegisterState) {
+                  showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Warning'),
+                            content: Text(state.errorMessage),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'OK'),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ));
+                } else if (state is SuccessRegisterState) {
+                  _clearText();
+                }
+              },
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: ListView(
+                      padding: const EdgeInsets.all(14),
+                      shrinkWrap: true,
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Center(
-                          child: LogoWidget(),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _buildFullnameWidget(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _buildEmailWidget(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _buildPhoneWidget(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _buildPassword(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _buildPasswordConfirm(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _builRegisterButton(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        _builBackToLogin()
+                        Form(
+                          key: formState,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Center(
+                                  child: LogoWidget(),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _buildFullnameWidget(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _buildEmailWidget(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _buildPhoneWidget(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _buildPassword(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _buildPasswordConfirm(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _builRegisterButton(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                _builBackToLogin()
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                ),
+                  BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+                    if (state is LoadingRegisterState) {
+                      return const LoadingWidget();
+                    } else {
+                      return Container();
+                    }
+                  })
+                ],
               ),
-              BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-                if (state is LoadingRegisterState) {
-                  return const LoadingWidget();
-                } else {
-                  return Container();
-                }
-              })
-            ],
+            ),
           ),
-        ),
+        )),
       ),
-    ));
+    );
   }
 
   Widget _buildFullnameWidget() {

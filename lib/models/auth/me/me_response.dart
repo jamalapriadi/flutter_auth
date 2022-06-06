@@ -24,6 +24,14 @@ class MeResponse {
       profilePicture: json["data"]["profile_picture"] ?? '',
       profilePictureUrl: json["data"]["profile_picture_url"] ?? '');
 
+  factory MeResponse.fromJsonList(Map<String, dynamic> json) => MeResponse(
+      id: json["id"] ?? '',
+      name: json["name"] ?? '',
+      email: json["email"] ?? '',
+      active: json["active"] ?? '',
+      profilePicture: json["profile_picture"] ?? '',
+      profilePictureUrl: json["profile_picture_url"] ?? '');
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
@@ -36,3 +44,6 @@ class MeResponse {
 
 MeResponse meResponseFromJson(String str) =>
     MeResponse.fromJson(json.decode(str));
+
+MeResponse meResponseFromJsonList(String str) =>
+    MeResponse.fromJsonList(json.decode(str));

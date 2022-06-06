@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/helpers/constant.dart';
 import 'package:flutter_login/pages/splash.dart';
 import 'package:flutter_login/routes.dart';
 
@@ -11,10 +12,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Login",
-      home: Splash(),
+      theme:
+          ThemeData(backgroundColor: Warna.biru, brightness: Brightness.light),
+      home: const Splash(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
