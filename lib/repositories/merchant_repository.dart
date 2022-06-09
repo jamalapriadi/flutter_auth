@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_login/helpers/cache_storage.dart';
-import 'package:flutter_login/helpers/http_request.dart';
-import 'package:flutter_login/models/merchant/merchant_response.dart';
+import 'package:hsp_gate/helpers/cache_storage.dart';
+import 'package:hsp_gate/helpers/http_request.dart';
+import 'package:hsp_gate/models/merchant/merchant_response.dart';
 
 class MerchantRepository {
   final network = Network();

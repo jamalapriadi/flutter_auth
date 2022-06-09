@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/button_widget.dart';
-import 'package:flutter_login/components/loading_widget.dart';
-import 'package:flutter_login/components/logo.dart';
-import 'package:flutter_login/components/password_form_field_widget.dart';
-import 'package:flutter_login/components/text_form_field_widget.dart';
-import 'package:flutter_login/cubit/auth/auth_cubit.dart';
-import 'package:flutter_login/cubit/auth/auth_state.dart';
-import 'package:flutter_login/helpers/constant.dart';
+import 'package:hsp_gate/components/button_widget.dart';
+import 'package:hsp_gate/components/loading_widget.dart';
+import 'package:hsp_gate/components/logo.dart';
+import 'package:hsp_gate/components/password_form_field_widget.dart';
+import 'package:hsp_gate/components/text_form_field_widget.dart';
+import 'package:hsp_gate/cubit/auth/auth_cubit.dart';
+import 'package:hsp_gate/cubit/auth/auth_state.dart';
+import 'package:hsp_gate/helpers/constant.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -185,36 +185,36 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildButtonRegister() {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: elevatedButton(
-          onPresses: () {
-            Navigator.pushReplacementNamed(context, "/register");
-          },
-          text: "Register",
-          winWidth: 14,
-          height: 21,
-          textSize: 18,
-          color: Warna.abu),
-    );
-  }
+  // Widget _buildButtonRegister() {
+  //   return SizedBox(
+  //     width: double.infinity,
+  //     height: 50,
+  //     child: elevatedButton(
+  //         onPresses: () {
+  //           Navigator.pushReplacementNamed(context, "/register");
+  //         },
+  //         text: "Register",
+  //         winWidth: 14,
+  //         height: 21,
+  //         textSize: 18,
+  //         color: Warna.abu),
+  //   );
+  // }
 
-  Widget _buildForgotPassword() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        child: Text(
-          "Forgot Passoword?",
-          style: TextStyle(color: Warna.hitam),
-        ),
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, "/password");
-        },
-      ),
-    );
-  }
+  // Widget _buildForgotPassword() {
+  //   return Container(
+  //     alignment: Alignment.centerRight,
+  //     child: TextButton(
+  //       child: Text(
+  //         "Forgot Passoword?",
+  //         style: TextStyle(color: Warna.hitam),
+  //       ),
+  //       onPressed: () {
+  //         Navigator.pushReplacementNamed(context, "/password");
+  //       },
+  //     ),
+  //   );
+  // }
 
   hideKeyboard() {
     FocusScope.of(context).requestFocus(FocusNode());

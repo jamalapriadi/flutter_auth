@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/pages/splash.dart';
-import 'package:flutter_login/routes.dart';
+import 'package:hsp_gate/helpers/constant.dart';
+import 'package:hsp_gate/pages/splash.dart';
+import 'package:hsp_gate/routes.dart';
 
 void main() {
   runApp(const MyApp());

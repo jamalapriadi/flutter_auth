@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/button_widget.dart';
-import 'package:flutter_login/components/text_form_default_widget.dart';
-import 'package:flutter_login/components/text_form_field_widget.dart';
-import 'package:flutter_login/cubit/profile/profile_cubit.dart';
-import 'package:flutter_login/cubit/profile/profile_state.dart';
-import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/models/auth/me/me_response.dart';
-import 'package:flutter_login/models/auth/me/profile/update_profile_request.dart';
+import 'package:hsp_gate/components/button_widget.dart';
+import 'package:hsp_gate/components/text_form_default_widget.dart';
+import 'package:hsp_gate/components/text_form_field_widget.dart';
+import 'package:hsp_gate/cubit/profile/profile_cubit.dart';
+import 'package:hsp_gate/cubit/profile/profile_state.dart';
+import 'package:hsp_gate/helpers/constant.dart';
+import 'package:hsp_gate/models/auth/me/me_response.dart';
+import 'package:hsp_gate/models/auth/me/profile/update_profile_request.dart';
 
 import '../../components/loading_widget.dart';
 

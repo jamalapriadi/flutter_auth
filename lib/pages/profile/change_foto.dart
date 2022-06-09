@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/helpers/constant.dart';
+import 'package:hsp_gate/helpers/constant.dart';
 
 class ChangeFoto extends StatefulWidget {
   const ChangeFoto({Key? key}) : super(key: key);

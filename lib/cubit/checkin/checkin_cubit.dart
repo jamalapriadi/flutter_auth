@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/cubit/checkin/checkin_state.dart';
-import 'package:flutter_login/models/checkin/checkin_request.dart';
-import 'package:flutter_login/repositories/me_repository.dart';
+import 'package:hsp_gate/cubit/checkin/checkin_state.dart';
+import 'package:hsp_gate/models/checkin/checkin_request.dart';
+import 'package:hsp_gate/repositories/me_repository.dart';
 
 class CheckinCubit extends Cubit<CheckinState> {
   CheckinCubit() : super(InitialCheckinState());

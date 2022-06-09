@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_login/models/auth/login/login_response.dart';
-import 'package:flutter_login/models/auth/password/password_response.dart';
-import 'package:flutter_login/models/auth/register/register_response.dart';
+import 'package:hsp_gate/models/auth/login/login_response.dart';
+import 'package:hsp_gate/models/auth/password/password_response.dart';
+import 'package:hsp_gate/models/auth/register/register_response.dart';
 
 abstract class AuthState extends Equatable {
   @override

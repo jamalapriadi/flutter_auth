@@ -1,23 +1,18 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:barcode_scan2/barcode_scan2.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/button_widget.dart';
-import 'package:flutter_login/components/loading_widget.dart';
-import 'package:flutter_login/cubit/checkin/checkin_cubit.dart';
-import 'package:flutter_login/cubit/checkin/checkin_state.dart';
-import 'package:flutter_login/cubit/member/member_cubit.dart';
-import 'package:flutter_login/cubit/member/member_state.dart';
-import 'package:flutter_login/cubit/merchant/merchant_cubit.dart';
-import 'package:flutter_login/cubit/merchant/merchant_state.dart';
-import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/models/checkin/checkin_request.dart';
-import 'package:flutter_login/pages/home.dart';
-import 'package:flutter_login/repositories/member_repository.dart';
+import 'package:hsp_gate/components/button_widget.dart';
+import 'package:hsp_gate/components/loading_widget.dart';
+import 'package:hsp_gate/cubit/checkin/checkin_cubit.dart';
+import 'package:hsp_gate/cubit/checkin/checkin_state.dart';
+import 'package:hsp_gate/cubit/member/member_cubit.dart';
+import 'package:hsp_gate/cubit/member/member_state.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_cubit.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_state.dart';
+import 'package:hsp_gate/helpers/constant.dart';
+import 'package:hsp_gate/models/checkin/checkin_request.dart';
+import 'package:hsp_gate/pages/home.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQR extends StatefulWidget {
@@ -42,10 +37,9 @@ class _ScanQRState extends State<ScanQR> {
   String? userId;
   String? memberId;
 
-  var _aspectTolerance = 0.00;
-  var _numberOfCameras = 0;
-  var _useAutoFocus = true;
-  var _autoEnableFlash = false;
+  final _aspectTolerance = 0.00;
+  final _useAutoFocus = true;
+  final _autoEnableFlash = false;
 
   String? error = "";
   ScanResult? result;
@@ -55,7 +49,6 @@ class _ScanQRState extends State<ScanQR> {
     merchantCubit.getMerchantById();
 
     Future.delayed(Duration.zero, () async {
-      _numberOfCameras = await BarcodeScanner.numberOfCameras;
       setState(() {});
     });
 
@@ -149,84 +142,6 @@ class _ScanQRState extends State<ScanQR> {
                       );
                     } else {
                       return const LoadingWidget();
-                      // return Column(
-                      //   children: <Widget>[
-                      //     if (result != null)
-                      //       Card(
-                      //         child: Column(
-                      //           children: <Widget>[
-                      //             ListTile(
-                      //               title: const Text('Result Type'),
-                      //               subtitle: Text(result!.type.toString()),
-                      //             ),
-                      //             ListTile(
-                      //               title: const Text('Raw Content'),
-                      //               subtitle: Text(result!.rawContent),
-                      //             ),
-                      //             ListTile(
-                      //               title: const Text('Format'),
-                      //               subtitle: Text(result!.format.toString()),
-                      //             ),
-                      //             ListTile(
-                      //               title: const Text('Format note'),
-                      //               subtitle: Text(result!.formatNote),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     Expanded(
-                      //       flex: 4,
-                      //       child: Text(
-                      //         result.toString(),
-                      //         style: const TextStyle(
-                      //           fontSize: 30.0,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //         textAlign: TextAlign.center,
-                      //       ),
-                      //     ),
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //         children: <Widget>[
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(
-                      //                 left: 20, right: 20),
-                      //             child: SizedBox(
-                      //               width: double.infinity,
-                      //               height: 50,
-                      //               child: ElevatedButton(
-                      //                   child: Text("Scan".toUpperCase(),
-                      //                       style:
-                      //                           const TextStyle(fontSize: 14)),
-                      //                   style: ButtonStyle(
-                      //                       foregroundColor:
-                      //                           MaterialStateProperty.all<Color>(
-                      //                               Warna.putih),
-                      //                       backgroundColor:
-                      //                           MaterialStateProperty.all<Color>(
-                      //                               Warna.hijau),
-                      //                       shape: MaterialStateProperty.all<
-                      //                               RoundedRectangleBorder>(
-                      //                           RoundedRectangleBorder(
-                      //                               side: BorderSide(
-                      //                                   color: Warna.hijau)))),
-                      //                   onPressed: () {
-                      //                     _scanQR();
-                      //                     // Navigator.pushReplacement(
-                      //                     //     context,
-                      //                     //     MaterialPageRoute(
-                      //                     //         builder: (context) =>
-                      //                     //             const Home()));
-                      //                   }),
-                      //             ),
-                      //           )
-                      //         ],
-                      //       ),
-                      //     )
-                      //   ],
-                      // );
                     }
                   },
                 )

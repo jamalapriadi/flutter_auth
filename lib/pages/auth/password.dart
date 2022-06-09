@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/button_widget.dart';
-import 'package:flutter_login/components/loading_widget.dart';
-import 'package:flutter_login/components/logo.dart';
-import 'package:flutter_login/components/text_form_field_widget.dart';
-import 'package:flutter_login/cubit/auth/auth_cubit.dart';
-import 'package:flutter_login/cubit/auth/auth_state.dart';
-import 'package:flutter_login/helpers/constant.dart';
+import 'package:hsp_gate/components/button_widget.dart';
+import 'package:hsp_gate/components/loading_widget.dart';
+import 'package:hsp_gate/components/logo.dart';
+import 'package:hsp_gate/components/text_form_field_widget.dart';
+import 'package:hsp_gate/cubit/auth/auth_cubit.dart';
+import 'package:hsp_gate/cubit/auth/auth_state.dart';
+import 'package:hsp_gate/helpers/constant.dart';
 
 class Password extends StatefulWidget {
   const Password({Key? key}) : super(key: key);

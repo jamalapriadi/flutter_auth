@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_login/pages/check_auth.dart';
+import 'package:hsp_gate/pages/check_auth.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);

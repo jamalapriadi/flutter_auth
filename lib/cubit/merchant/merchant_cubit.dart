@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/cubit/merchant/merchant_state.dart';
-import 'package:flutter_login/repositories/merchant_repository.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_state.dart';
+import 'package:hsp_gate/repositories/merchant_repository.dart';
 
 class MerchantCubit extends Cubit<MerchantState> {
   MerchantCubit() : super(InitialMerchantState());

@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/cubit/auth/auth_state.dart';
-import 'package:flutter_login/models/auth/login/login_request.dart';
-import 'package:flutter_login/models/auth/password/password_request.dart';
-import 'package:flutter_login/models/auth/register/register_request.dart';
-import 'package:flutter_login/repositories/auth_repository.dart';
-import 'package:flutter_login/repositories/me_repository.dart';
+import 'package:hsp_gate/cubit/auth/auth_state.dart';
+import 'package:hsp_gate/models/auth/login/login_request.dart';
+import 'package:hsp_gate/models/auth/password/password_request.dart';
+import 'package:hsp_gate/models/auth/register/register_request.dart';
+import 'package:hsp_gate/repositories/auth_repository.dart';
+import 'package:hsp_gate/repositories/me_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(InitialAuthState());

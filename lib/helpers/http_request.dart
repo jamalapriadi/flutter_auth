@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_login/helpers/cache_storage.dart';
+import 'package:hsp_gate/helpers/cache_storage.dart';
 import 'package:http/http.dart' show Client;
 
 import 'cache_const.dart';

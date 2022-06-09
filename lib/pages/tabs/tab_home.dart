@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/loading_widget.dart';
-import 'package:flutter_login/components/logo.dart';
-import 'package:flutter_login/cubit/checkin/checkin_cubit.dart';
-import 'package:flutter_login/cubit/merchant/merchant_cubit.dart';
-import 'package:flutter_login/cubit/merchant/merchant_state.dart';
-import 'package:flutter_login/cubit/profile/profile_cubit.dart';
-import 'package:flutter_login/cubit/profile/profile_state.dart';
-import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/models/auth/me/me_response.dart';
+import 'package:hsp_gate/components/loading_widget.dart';
+import 'package:hsp_gate/components/logo.dart';
+import 'package:hsp_gate/cubit/checkin/checkin_cubit.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_cubit.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_state.dart';
+import 'package:hsp_gate/cubit/profile/profile_cubit.dart';
+import 'package:hsp_gate/cubit/profile/profile_state.dart';
+import 'package:hsp_gate/helpers/constant.dart';
+import 'package:hsp_gate/models/auth/me/me_response.dart';
 
 import '../../cubit/checkin/checkin_state.dart';
 

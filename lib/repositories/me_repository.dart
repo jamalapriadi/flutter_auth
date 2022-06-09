@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:flutter_login/helpers/cache_const.dart';
-import 'package:flutter_login/helpers/cache_storage.dart';
-import 'package:flutter_login/helpers/http_request.dart';
-import 'package:flutter_login/models/auth/default_response.dart';
-import 'package:flutter_login/models/auth/me/me_response.dart';
-import 'package:flutter_login/models/auth/me/password/update_password_request.dart';
-import 'package:flutter_login/models/auth/me/profile/update_profile_request.dart';
-import 'package:flutter_login/models/checkin/checkin.dart';
-import 'package:flutter_login/models/checkin/checkin_request.dart';
+import 'package:hsp_gate/helpers/cache_const.dart';
+import 'package:hsp_gate/helpers/cache_storage.dart';
+import 'package:hsp_gate/helpers/http_request.dart';
+import 'package:hsp_gate/models/auth/default_response.dart';
+import 'package:hsp_gate/models/auth/me/me_response.dart';
+import 'package:hsp_gate/models/auth/me/password/update_password_request.dart';
+import 'package:hsp_gate/models/auth/me/profile/update_profile_request.dart';
+import 'package:hsp_gate/models/checkin/checkin.dart';
+import 'package:hsp_gate/models/checkin/checkin_request.dart';
 
 class MeRepository {
   final network = Network();

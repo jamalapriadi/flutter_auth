@@ -1,10 +1,10 @@
-import 'package:flutter_login/helpers/http_request.dart';
-import 'package:flutter_login/models/auth/login/login_request.dart';
-import 'package:flutter_login/models/auth/login/login_response.dart';
-import 'package:flutter_login/models/auth/password/password_request.dart';
-import 'package:flutter_login/models/auth/password/password_response.dart';
-import 'package:flutter_login/models/auth/register/register_request.dart';
-import 'package:flutter_login/models/auth/register/register_response.dart';
+import 'package:hsp_gate/helpers/http_request.dart';
+import 'package:hsp_gate/models/auth/login/login_request.dart';
+import 'package:hsp_gate/models/auth/login/login_response.dart';
+import 'package:hsp_gate/models/auth/password/password_request.dart';
+import 'package:hsp_gate/models/auth/password/password_response.dart';
+import 'package:hsp_gate/models/auth/register/register_request.dart';
+import 'package:hsp_gate/models/auth/register/register_response.dart';
 
 import '../helpers/cache_const.dart';
 import '../helpers/cache_storage.dart';

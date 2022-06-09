@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/cubit/profile/profile_state.dart';
-import 'package:flutter_login/models/auth/me/password/update_password_request.dart';
-import 'package:flutter_login/models/auth/me/profile/update_profile_request.dart';
-import 'package:flutter_login/repositories/me_repository.dart';
+import 'package:hsp_gate/cubit/profile/profile_state.dart';
+import 'package:hsp_gate/models/auth/me/password/update_password_request.dart';
+import 'package:hsp_gate/models/auth/me/profile/update_profile_request.dart';
+import 'package:hsp_gate/repositories/me_repository.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(InitialProfileState());

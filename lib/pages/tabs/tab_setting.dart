@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/loading_widget.dart';
-import 'package:flutter_login/cubit/profile/profile_cubit.dart';
-import 'package:flutter_login/cubit/profile/profile_state.dart';
-import 'package:flutter_login/models/auth/me/me_response.dart';
-import 'package:flutter_login/pages/profile/change_password.dart';
-import 'package:flutter_login/pages/profile/change_profile.dart';
+import 'package:hsp_gate/components/loading_widget.dart';
+import 'package:hsp_gate/cubit/profile/profile_cubit.dart';
+import 'package:hsp_gate/cubit/profile/profile_state.dart';
+import 'package:hsp_gate/models/auth/me/me_response.dart';
+import 'package:hsp_gate/pages/profile/change_password.dart';
+import 'package:hsp_gate/pages/profile/change_profile.dart';
 
 import '../../helpers/constant.dart';
 

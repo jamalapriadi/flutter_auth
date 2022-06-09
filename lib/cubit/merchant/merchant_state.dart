@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_login/models/merchant/merchant_response.dart';
+import 'package:hsp_gate/models/merchant/merchant_response.dart';
 
 abstract class MerchantState extends Equatable {
   @override

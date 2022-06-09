@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/pages/auth/login.dart';
-import 'package:flutter_login/pages/auth/password.dart';
-import 'package:flutter_login/pages/auth/register.dart';
-import 'package:flutter_login/pages/home.dart';
-import 'package:flutter_login/pages/merchant/merchant.dart';
-import 'package:flutter_login/pages/splash.dart';
+import 'package:hsp_gate/pages/auth/login.dart';
+import 'package:hsp_gate/pages/auth/password.dart';
+import 'package:hsp_gate/pages/auth/register.dart';
+import 'package:hsp_gate/pages/home.dart';
+import 'package:hsp_gate/pages/merchant/merchant.dart';
+import 'package:hsp_gate/pages/splash.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

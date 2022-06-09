@@ -1,5 +1,5 @@
-import 'package:flutter_login/helpers/http_request.dart';
-import 'package:flutter_login/models/member/member_response.dart';
+import 'package:hsp_gate/helpers/http_request.dart';
+import 'package:hsp_gate/models/member/member_response.dart';
 
 class MemberRepository {
   final network = Network();

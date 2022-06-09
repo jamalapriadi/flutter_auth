@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/cubit/member/member_state.dart';
-import 'package:flutter_login/repositories/member_repository.dart';
+import 'package:hsp_gate/cubit/member/member_state.dart';
+import 'package:hsp_gate/repositories/member_repository.dart';
 
 class MemberCubit extends Cubit<MemberState> {
   MemberCubit() : super(InitialMemberState());

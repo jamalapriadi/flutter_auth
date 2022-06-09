@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/cubit/profile/profile_cubit.dart';
-import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/pages/scan/scan_qr.dart';
+import 'package:hsp_gate/cubit/profile/profile_cubit.dart';
+import 'package:hsp_gate/helpers/constant.dart';
+import 'package:hsp_gate/pages/scan/scan_qr.dart';
 import 'tabs/tab_setting.dart' as settingtab;
 import 'tabs/tab_home.dart' as hometab;
 

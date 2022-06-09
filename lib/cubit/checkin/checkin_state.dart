@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_login/models/auth/default_response.dart';
-import 'package:flutter_login/models/checkin/checkin.dart';
+import 'package:hsp_gate/models/auth/default_response.dart';
+import 'package:hsp_gate/models/checkin/checkin.dart';
 
 abstract class CheckinState extends Equatable {
   @override
