@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_login/components/button_widget.dart';
+import 'package:flutter_login/components/loading_widget.dart';
 import 'package:flutter_login/components/logo.dart';
+import 'package:flutter_login/cubit/checkin/checkin_cubit.dart';
 import 'package:flutter_login/cubit/merchant/merchant_cubit.dart';
 import 'package:flutter_login/cubit/merchant/merchant_state.dart';
 import 'package:flutter_login/cubit/profile/profile_cubit.dart';
 import 'package:flutter_login/cubit/profile/profile_state.dart';
 import 'package:flutter_login/helpers/constant.dart';
 import 'package:flutter_login/models/auth/me/me_response.dart';
-import 'package:flutter_login/pages/scan/scan_result.dart';
+
+import '../../cubit/checkin/checkin_state.dart';
 
 class TabHome extends StatefulWidget {
   const TabHome({Key? key}) : super(key: key);
@@ -21,18 +23,20 @@ class _TabHomeState extends State<TabHome> {
   ProfileCubit profileCubit = ProfileCubit();
   MerchantCubit merchantCubit = MerchantCubit();
   MeResponse meResponse = MeResponse();
+  CheckinCubit checkinCubit = CheckinCubit();
 
   @override
   void initState() {
     profileCubit.getMe();
     merchantCubit.getMerchantById();
+    checkinCubit.getCheckinToday();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return Scaffold(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,163 +52,154 @@ class _TabHomeState extends State<TabHome> {
             padding: const EdgeInsets.only(left: 10),
             child: _buildMerchant(),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              "History",
-              style: TextStyle(
-                  color: Warna.hitam,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          Divider(
-            color: Warna.biru,
-            thickness: 3,
-            indent: 10,
-            endIndent: 180,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    "Hari ini",
-                    style: TextStyle(
-                        color: Warna.abu, fontWeight: FontWeight.bold),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      "History",
+                      style: TextStyle(
+                          color: Warna.hitam,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  flex: 2,
-                ),
-                Expanded(
-                  child: Text(
-                    "10 Member",
-                    style: TextStyle(
-                        color: Warna.hijau,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                  Divider(
+                    color: Warna.biru,
+                    thickness: 3,
+                    indent: 10,
+                    endIndent: 180,
                   ),
-                  flex: 1,
-                )
-              ],
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: SizedBox(
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    children: [
-                      ListTile(
-                        tileColor: Warna.abumuda,
-                        textColor: Warna.hitam,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10))),
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            const Text("Nama Member"),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: const [
-                                Expanded(
-                                  child: Text("1111 2222 3333 4444"),
-                                  flex: 3,
-                                ),
-                                Expanded(
-                                  child: Text("14.30 Wib"),
-                                  flex: 1,
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      ListTile(
-                        tileColor: Warna.abumuda,
-                        textColor: Warna.hitam,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10))),
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Nama Member"),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: const [
-                                Expanded(
-                                  child: Text("1111 2222 3333 4444"),
-                                  flex: 3,
-                                ),
-                                Expanded(
-                                  child: Text("17.00 Wib"),
-                                  flex: 1,
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ))),
-          const SizedBox(
-            height: 10,
-          ),
-          _buildButtonRegister()
+                ],
+              ),
+              SizedBox(
+                height: 300,
+                child: _buildListCheckinToday(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 
-  Widget _buildButtonRegister() {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: elevatedButton(
-          onPresses: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => ScanResult(
-                          q: 'MC-05302',
-                        )));
+  Widget _buildListCheckinToday() {
+    return BlocProvider<CheckinCubit>(
+      create: (context) => checkinCubit,
+      child: BlocListener<CheckinCubit, CheckinState>(
+        listener: (context, state) {},
+        child: BlocBuilder<CheckinCubit, CheckinState>(
+          builder: (context, state) {
+            if (state is GetListCheckinState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Hari ini",
+                            style: TextStyle(
+                                color: Warna.abu, fontWeight: FontWeight.bold),
+                          ),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          child: Text(
+                            state.checkinList.length.toString() + " Member",
+                            style: TextStyle(
+                                color: Warna.hijau,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          flex: 1,
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      itemCount: state.checkinList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Column(
+                          children: [
+                            ListTile(
+                              tileColor: Warna.abumuda,
+                              textColor: Warna.hitam,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                              title: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(state.checkinList[index].namaMember
+                                      .toString()),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(state
+                                            .checkinList[index].memberId
+                                            .toString()),
+                                        flex: 3,
+                                      ),
+                                      Expanded(
+                                        child: Text(state.checkinList[index].jam
+                                                .toString() +
+                                            " Wib"),
+                                        flex: 2,
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            } else if (state is LoadingCheckinState) {
+              return const LoadingWidget();
+            } else {
+              return Container();
+            }
           },
-          text: "Register",
-          winWidth: 14,
-          height: 21,
-          textSize: 18,
-          color: Warna.abu),
+        ),
+      ),
     );
   }
 

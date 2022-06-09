@@ -7,7 +7,8 @@ import 'package:flutter_login/models/auth/default_response.dart';
 import 'package:flutter_login/models/auth/me/me_response.dart';
 import 'package:flutter_login/models/auth/me/password/update_password_request.dart';
 import 'package:flutter_login/models/auth/me/profile/update_profile_request.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_login/models/checkin/checkin.dart';
+import 'package:flutter_login/models/checkin/checkin_request.dart';
 
 class MeRepository {
   final network = Network();
@@ -50,6 +51,19 @@ class MeRepository {
         urlApi + '/auth/update-info', request.toJson());
 
     return defaultResponseFromJson(response.body);
+  }
+
+  Future<DefaultResponse> userCheckin(CheckinRequest request) async {
+    final response = await network.postRequestForm(
+        urlApi + '/auth/checkin', request.toJson());
+
+    return defaultResponseFromJson(response.body);
+  }
+
+  Future<List<Checkin>> userCheckinToday() async {
+    final response = await network.getRequest(urlApi + '/auth/checkin');
+
+    return checkinFromList(response.body);
   }
 
   Future<bool> signOut() async {

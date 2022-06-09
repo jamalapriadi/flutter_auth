@@ -4,7 +4,6 @@ import 'package:flutter_login/components/loading_widget.dart';
 import 'package:flutter_login/cubit/profile/profile_cubit.dart';
 import 'package:flutter_login/cubit/profile/profile_state.dart';
 import 'package:flutter_login/models/auth/me/me_response.dart';
-import 'package:flutter_login/pages/profile/change_foto.dart';
 import 'package:flutter_login/pages/profile/change_password.dart';
 import 'package:flutter_login/pages/profile/change_profile.dart';
 
@@ -136,26 +135,26 @@ class _TabSettingState extends State<TabSetting> {
             const SizedBox(
               height: 10.0,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Card(
-                child: ListTile(
-                  trailing: const Icon(Icons.arrow_right),
-                  title: const Text("CHANGE PHOTO "),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ChangeFoto(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 20, right: 20),
+            //   child: Card(
+            //     child: ListTile(
+            //       trailing: const Icon(Icons.arrow_right),
+            //       title: const Text("CHANGE PHOTO "),
+            //       onTap: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) => const ChangeFoto(),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 10.0,
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Card(

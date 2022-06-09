@@ -94,13 +94,13 @@ class _LoginState extends State<Login> {
                             height: 10,
                           ),
                           _buildPassword(),
-                          _buildForgotPassword(),
+                          // _buildForgotPassword(),
                           const SizedBox(
                             height: 10,
                           ),
                           _buildButtonLogin(),
                           const SizedBox(height: 10),
-                          _buildButtonRegister()
+                          // _buildButtonRegister()
                         ],
                       ),
                     ),

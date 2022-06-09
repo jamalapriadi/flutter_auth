@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/components/button_widget.dart';
 import 'package:flutter_login/components/loading_widget.dart';
+import 'package:flutter_login/cubit/checkin/checkin_cubit.dart';
+import 'package:flutter_login/cubit/checkin/checkin_state.dart';
 import 'package:flutter_login/cubit/member/member_cubit.dart';
 import 'package:flutter_login/cubit/member/member_state.dart';
 import 'package:flutter_login/cubit/merchant/merchant_cubit.dart';
 import 'package:flutter_login/cubit/merchant/merchant_state.dart';
 import 'package:flutter_login/helpers/constant.dart';
+import 'package:flutter_login/models/checkin/checkin_request.dart';
 import 'package:flutter_login/pages/home.dart';
 
 // ignore: must_be_immutable
@@ -24,8 +27,11 @@ class _ScanResultState extends State<ScanResult> {
 
   final memberCubit = MemberCubit();
   final merchantCubit = MerchantCubit();
+  final checkinCubit = CheckinCubit();
 
-  String? lokasiId;
+  String? merchantId;
+  String? userId;
+  String? memberId;
 
   @override
   void initState() {
@@ -54,6 +60,8 @@ class _ScanResultState extends State<ScanResult> {
                   child: BlocBuilder<MemberCubit, MemberState>(
                     builder: (context, state) {
                       if (state is GetMemberState) {
+                        userId = state.memberResponse.userId.toString();
+                        memberId = state.memberResponse.memberId.toString();
                         if (state.memberResponse.success == true) {
                           if (state.memberResponse.active == 'Y') {
                             return _buildActiveMember(state);
@@ -80,194 +88,250 @@ class _ScanResultState extends State<ScanResult> {
   }
 
   Widget _buildActiveMember(state) {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-            child: Form(
-          key: formState,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Container(
-                        height: 126,
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                          "assets/img/user_icon.png",
-                          fit: BoxFit.contain,
-                          width: 210,
+    return BlocProvider<CheckinCubit>(
+      create: (context) => checkinCubit,
+      child: BlocListener<CheckinCubit, CheckinState>(
+        listener: (context, state) {
+          if (state is SuccessCheckinState) {
+            if (state.resp.success == true) {
+              showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Success'),
+                        content: Text(state.resp.message.toString()),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, "/home");
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ));
+            } else {
+              showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Warning'),
+                        content: Text(state.resp.message.toString()),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ));
+            }
+          }
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SingleChildScrollView(
+                child: Form(
+              key: formState,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(left: 5, right: 5, top: 10),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            height: 126,
+                            alignment: Alignment.center,
+                            child: Image.asset(
+                              "assets/img/user_icon.png",
+                              fit: BoxFit.contain,
+                              width: 210,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 100,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    child: Center(
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Warna.putih,
-                            child: const Icon(Icons.check),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            "Check-in Berhasil",
-                          )
-                        ],
-                      ),
+                    const SizedBox(
+                      height: 10,
                     ),
-                    style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Warna.putih),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Warna.hijau),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                    SizedBox(
+                      height: 100,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Warna.putih,
+                                child: const Icon(Icons.check),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text(
+                                "Check-in Berhasil",
+                              )
+                            ],
+                          ),
+                        ),
+                        style: ButtonStyle(
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Warna.putih),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Warna.hijau),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                     side: BorderSide(color: Warna.hijau)))),
-                    onPressed: () {},
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          "Informasih Check-In",
-                          style: TextStyle(
-                              color: Warna.hitam,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        onPressed: () {},
                       ),
-                      Divider(
-                        color: Warna.biru,
-                        thickness: 3,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-                      ListView(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildNamaMerchant(),
-                          Divider(
-                            color: Warna.abumuda,
-                            thickness: 2,
-                            indent: 10,
-                            endIndent: 10,
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.person_sharp),
-                            title: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Nama Lengkap",
-                                    style: TextStyle(
-                                        color: Warna.abu,
-                                        fontWeight: FontWeight.bold)),
-                                Text(state.memberResponse.fullName.toString())
-                              ],
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Informasih Check-In",
+                              style: TextStyle(
+                                  color: Warna.hitam,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Divider(
-                            color: Warna.abumuda,
-                            thickness: 2,
+                            color: Warna.biru,
+                            thickness: 3,
                             indent: 10,
                             endIndent: 10,
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.calendar_month),
-                            title: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Tanggal & Waktu Scan",
-                                    style: TextStyle(
-                                        color: Warna.abu,
-                                        fontWeight: FontWeight.bold)),
-                                Text(state.memberResponse.tanggal.toString() +
-                                    ", " +
-                                    state.memberResponse.jam.toString() +
-                                    " WIB")
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            color: Warna.abumuda,
-                            thickness: 2,
-                            indent: 10,
-                            endIndent: 10,
-                          ),
-                        ],
-                      )
-                    ]),
-                const SizedBox(
-                  height: 10,
+                          ListView(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            children: [
+                              _buildNamaMerchant(),
+                              Divider(
+                                color: Warna.abumuda,
+                                thickness: 2,
+                                indent: 10,
+                                endIndent: 10,
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.person_sharp),
+                                title: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Nama Lengkap",
+                                        style: TextStyle(
+                                            color: Warna.abu,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(state.memberResponse.fullName
+                                        .toString())
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Warna.abumuda,
+                                thickness: 2,
+                                indent: 10,
+                                endIndent: 10,
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.calendar_month),
+                                title: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Tanggal & Waktu Scan",
+                                        style: TextStyle(
+                                            color: Warna.abu,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(state.memberResponse.tanggal
+                                            .toString() +
+                                        ", " +
+                                        state.memberResponse.jam.toString() +
+                                        " WIB")
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Warna.abumuda,
+                                thickness: 2,
+                                indent: 10,
+                                endIndent: 10,
+                              ),
+                            ],
+                          )
+                        ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: elevatedButton(
+                          onPresses: () {
+                            CheckinRequest request = CheckinRequest(
+                                user: userId.toString(),
+                                member: memberId.toString(),
+                                merchant: merchantId.toString());
+
+                            checkinCubit.checkIn(request);
+                          },
+                          text: "Confirm",
+                          winWidth: 14,
+                          height: 21,
+                          textSize: 18,
+                          color: Warna.hijau),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: elevatedButton(
+                          onPresses: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        const Home()));
+                          },
+                          text: "Kembali",
+                          winWidth: 14,
+                          height: 21,
+                          textSize: 18,
+                          color: Warna.abu),
+                    )
+                  ],
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: elevatedButton(
-                      onPresses: () {},
-                      text: "Confirm",
-                      winWidth: 14,
-                      height: 21,
-                      textSize: 18,
-                      color: Warna.hijau),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: elevatedButton(
-                      onPresses: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const Home()));
-                      },
-                      text: "Kembali",
-                      winWidth: 14,
-                      height: 21,
-                      textSize: 18,
-                      color: Warna.abu),
-                )
-              ],
-            ),
-          ),
-        ))
-      ],
+              ),
+            )),
+            BlocBuilder<CheckinCubit, CheckinState>(builder: (context, state) {
+              if (state is LoadingCheckinState) {
+                return const LoadingWidget();
+              } else {
+                return Container();
+              }
+            })
+          ],
+        ),
+      ),
     );
   }
 
@@ -289,6 +353,8 @@ class _ScanResultState extends State<ScanResult> {
               child: BlocBuilder<MerchantCubit, MerchantState>(
                 builder: (context, state) {
                   if (state is GetMerchantByIdState) {
+                    merchantId = state.merchantResponse.id.toString();
+
                     return Text(state.merchantResponse.nama.toString());
                   } else {
                     return Container();

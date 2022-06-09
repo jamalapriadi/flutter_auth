@@ -6,11 +6,7 @@ import 'package:flutter_login/components/logo.dart';
 import 'package:flutter_login/cubit/merchant/merchant_cubit.dart';
 import 'package:flutter_login/cubit/merchant/merchant_state.dart';
 import 'package:flutter_login/cubit/profile/profile_cubit.dart';
-import 'package:flutter_login/cubit/profile/profile_state.dart';
 import 'package:flutter_login/helpers/constant.dart';
-import 'package:flutter_login/models/auth/me/me_response.dart';
-import 'package:flutter_login/pages/home.dart';
-import 'package:flutter_login/repositories/merchant_repository.dart';
 
 class Merchant extends StatefulWidget {
   const Merchant({Key? key}) : super(key: key);

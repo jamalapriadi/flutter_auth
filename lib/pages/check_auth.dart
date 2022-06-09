@@ -4,7 +4,6 @@ import 'package:flutter_login/components/loading_widget.dart';
 import 'package:flutter_login/cubit/auth/auth_cubit.dart';
 import 'package:flutter_login/cubit/auth/auth_state.dart';
 import 'package:flutter_login/pages/auth/login.dart';
-import 'package:flutter_login/pages/home.dart';
 import 'package:flutter_login/pages/merchant/merchant.dart';
 
 class CheckAuth extends StatefulWidget {
