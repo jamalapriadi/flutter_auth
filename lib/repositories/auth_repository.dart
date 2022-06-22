@@ -42,7 +42,7 @@ class AuthRepository {
   }
 
   Future<bool> setIsLogin(bool sudahlogin) async {
-    return await Cache.setCacheBool(key: isLogin, data: sudahlogin);
+    return await Cache.setCacheBool(key: 'isLogin', data: sudahlogin);
   }
 
   Future<bool> setToken(String token) async {
@@ -50,8 +50,11 @@ class AuthRepository {
   }
 
   Future<bool> cekIsLogin() async {
-    return await Cache.getCacheBool(key: isLogin) ??
-        Cache.getCache(key: isLogin);
+    if (await Cache.getCacheBool(key: 'isLogin') == null) {
+      return false;
+    } else {
+      return await Cache.getCacheBool(key: 'isLogin');
+    }
   }
 
   Future<String> getAccessToken() async {

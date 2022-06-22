@@ -6,28 +6,25 @@ import 'package:hsp_gate/cubit/checkin/checkin_cubit.dart';
 import 'package:hsp_gate/cubit/checkin/checkin_state.dart';
 import 'package:hsp_gate/cubit/member/member_cubit.dart';
 import 'package:hsp_gate/cubit/member/member_state.dart';
-import 'package:hsp_gate/cubit/merchant/merchant_cubit.dart';
-import 'package:hsp_gate/cubit/merchant/merchant_state.dart';
 import 'package:hsp_gate/helpers/constant.dart';
-import 'package:hsp_gate/models/checkin/checkin_request.dart';
 import 'package:hsp_gate/pages/home.dart';
 
-// ignore: must_be_immutable
-class ScanResult extends StatefulWidget {
+import '../../models/checkin/checkin_request.dart';
+
+class CekScan extends StatefulWidget {
   String? q;
-  ScanResult({Key? key, this.q}) : super(key: key);
+
+  CekScan({Key? key, this.q}) : super(key: key);
 
   @override
-  State<ScanResult> createState() => _ScanResultState();
+  State<CekScan> createState() => _CekScanState();
 }
 
-class _ScanResultState extends State<ScanResult> {
-  final scaffoldState = GlobalKey<FormState>();
-  final formState = GlobalKey<FormState>();
-
+class _CekScanState extends State<CekScan> {
   final memberCubit = MemberCubit();
-  final merchantCubit = MerchantCubit();
   final checkinCubit = CheckinCubit();
+
+  final formState = GlobalKey<FormState>();
 
   String? merchantId;
   String? userId;
@@ -35,59 +32,69 @@ class _ScanResultState extends State<ScanResult> {
 
   @override
   void initState() {
-    // merchantCubit.getMerchantById();
-    merchantCubit.getMerchantById();
-    memberCubit.getMember(widget.q.toString());
-
-    super.initState();
+    memberCubit.scanMember(widget.q.toString());
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          key: scaffoldState,
-          backgroundColor: Warna.putih,
-          body: Column(
-            children: [
-              BlocProvider<MemberCubit>(
-                create: (context) => memberCubit,
-                child: BlocListener<MemberCubit, MemberState>(
-                  listener: (context, state) {
-                    if (state is GetMemberState) {}
-                  },
-                  child: BlocBuilder<MemberCubit, MemberState>(
-                    builder: (context, state) {
-                      if (state is GetMemberState) {
-                        userId = state.memberResponse.userId.toString();
-                        memberId = state.memberResponse.memberId.toString();
-                        if (state.memberResponse.success == true) {
-                          if (state.memberResponse.active == 'Y') {
-                            return _buildActiveMember(state);
-                          } else {
-                            return _buildNonActiveMember(state);
-                          }
+        body: BlocProvider<MemberCubit>(
+          create: (context) => memberCubit,
+          child: BlocListener<MemberCubit, MemberState>(
+            listener: (context, state) {
+              if (state is GetMemberState) {
+                userId = state.memberResponse.userId.toString();
+                memberId = state.memberResponse.memberId.toString();
+                // if (state.memberResponse.success == true) {
+                //   if (state.memberResponse.active == 'Y') {
+                //     _buildActiveMember(state);
+                //   } else {
+                //     _buildNonActiveMember(state);
+                //   }
+                // } else {
+                //   _buildUserNotFound();
+                // }
+              } else if (state is LoadingGetMemberState) {
+                const LoadingWidget();
+              }
+            },
+            child: Stack(
+              children: [
+                BlocBuilder<MemberCubit, MemberState>(
+                  builder: (context, state) {
+                    if (state is GetScanMemberState) {
+                      if (state.scanMemberResponse.success == true) {
+                        userId = state.scanMemberResponse.userId.toString();
+                        memberId = state.scanMemberResponse.memberId.toString();
+
+                        if (state.scanMemberResponse.active == 'Y') {
+                          return _buildActiveMember(state.scanMemberResponse);
                         } else {
-                          return _buildUserNotFound();
+                          return _buildNonActiveMember(
+                              state.scanMemberResponse);
                         }
-                      } else if (state is LoadingGetMemberState) {
-                        return const Center(
-                          child: LoadingWidget(),
-                        );
                       } else {
-                        return Container();
+                        return _buildUserNotFound(state.scanMemberResponse);
                       }
-                    },
-                  ),
-                ),
-              )
-            ],
-          )),
+                    } else if (state is LoadingGetMemberState) {
+                      return const Center(
+                        child: LoadingWidget(),
+                      );
+                    } else {
+                      return const LoadingWidget();
+                    }
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildActiveMember(state) {
+  Widget _buildActiveMember(member) {
     return BlocProvider<CheckinCubit>(
       create: (context) => checkinCubit,
       child: BlocListener<CheckinCubit, CheckinState>(
@@ -222,7 +229,6 @@ class _ScanResultState extends State<ScanResult> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: [
-                              _buildNamaMerchant(),
                               Divider(
                                 color: Warna.abumuda,
                                 thickness: 2,
@@ -239,8 +245,7 @@ class _ScanResultState extends State<ScanResult> {
                                         style: TextStyle(
                                             color: Warna.abu,
                                             fontWeight: FontWeight.bold)),
-                                    Text(state.memberResponse.fullName
-                                        .toString())
+                                    Text(member.fullName.toString())
                                   ],
                                 ),
                               ),
@@ -260,10 +265,9 @@ class _ScanResultState extends State<ScanResult> {
                                         style: TextStyle(
                                             color: Warna.abu,
                                             fontWeight: FontWeight.bold)),
-                                    Text(state.memberResponse.tanggal
-                                            .toString() +
+                                    Text(member.tanggal.toString() +
                                         ", " +
-                                        state.memberResponse.jam.toString() +
+                                        member.jam.toString() +
                                         " WIB")
                                   ],
                                 ),
@@ -335,40 +339,7 @@ class _ScanResultState extends State<ScanResult> {
     );
   }
 
-  Widget _buildNamaMerchant() {
-    return ListTile(
-      leading: const Icon(Icons.location_on_outlined),
-      title: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Lokasi Check-In",
-            style: TextStyle(color: Warna.abu, fontWeight: FontWeight.bold),
-          ),
-          BlocProvider<MerchantCubit>(
-            create: (context) => merchantCubit,
-            child: BlocListener<MerchantCubit, MerchantState>(
-              listener: (context, state) {},
-              child: BlocBuilder<MerchantCubit, MerchantState>(
-                builder: (context, state) {
-                  if (state is GetMerchantByIdState) {
-                    merchantId = state.merchantResponse.id.toString();
-
-                    return Text(state.merchantResponse.nama.toString());
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNonActiveMember(state) {
+  Widget _buildNonActiveMember(member) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -475,7 +446,7 @@ class _ScanResultState extends State<ScanResult> {
                                     style: TextStyle(
                                         color: Warna.abu,
                                         fontWeight: FontWeight.bold)),
-                                Text(state.memberResponse.fullName.toString())
+                                Text(member.fullName.toString())
                               ],
                             ),
                           ),
@@ -486,8 +457,7 @@ class _ScanResultState extends State<ScanResult> {
                               children: [
                                 Text(
                                   "Masa Berlaku kartu anda habis pada tanggal : " +
-                                      state.memberResponse.validUntil
-                                          .toString(),
+                                      member.validUntil.toString(),
                                   style: TextStyle(
                                       color: Warna.abu,
                                       fontWeight: FontWeight.bold),
@@ -545,7 +515,7 @@ class _ScanResultState extends State<ScanResult> {
     );
   }
 
-  Widget _buildUserNotFound() {
+  Widget _buildUserNotFound(result) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -648,12 +618,13 @@ class _ScanResultState extends State<ScanResult> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("User Not Found",
+                                Text(result.message.toString(),
                                     style: TextStyle(
                                         color: Warna.abu,
                                         fontWeight: FontWeight.bold)),
-                                const Text(
-                                    "Member ID yang anda cari tidak ditemukan")
+                                // Text(
+                                //     "Member ID yang anda cari tidak ditemukan")
+                                // Text(result.message.toString())
                               ],
                             ),
                           ),

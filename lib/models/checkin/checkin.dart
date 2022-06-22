@@ -43,7 +43,8 @@ class Checkin {
       tanggal: json["tanggal"],
       jam: json["jam"],
       fullJam: json["full_jam"],
-      namaMember: json["member"]["data"]["full_name"]);
+      namaMember:
+          json["member"] == null ? '' : json["member"]["data"]["full_name"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,

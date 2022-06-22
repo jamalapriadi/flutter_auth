@@ -40,7 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
       //check if token expired or not
       emit(CekLoginStatusState());
       meRepository.cekToken().then((resp) async {
-        if (resp == 200) {
+        if (resp.succes == true) {
           emit(AvailableAuthState());
         } else {
           emit(FailureAuthState('Login Gagal'));

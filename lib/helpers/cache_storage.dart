@@ -44,7 +44,7 @@ class Cache {
     return data;
   }
 
-  static getCacheBool({required bool key}) async {
+  static getCacheBool({required dynamic key}) async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
     final SharedPreferences prefs = await _prefs;

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 class MemberResponse {
-  bool? success;
   String? id;
   String? type;
   String? memberId;
@@ -28,8 +27,7 @@ class MemberResponse {
   String? jam;
 
   MemberResponse(
-      {this.success,
-      this.id,
+      {this.id,
       this.type,
       this.memberId,
       this.title,
@@ -55,7 +53,6 @@ class MemberResponse {
       this.jam});
 
   factory MemberResponse.fromJson(Map<String, dynamic> json) => MemberResponse(
-      success: true,
       id: json["data"]["id"] ?? "",
       type: json["data"]["type"] ?? "",
       memberId: json["data"]["member_id"] ?? "",
@@ -80,33 +77,6 @@ class MemberResponse {
       userId: json["data"]["user_id"] ?? "",
       tanggal: json["data"]["tanggal"] ?? "",
       jam: json["data"]["jam"] ?? "");
-
-  factory MemberResponse.fromJsonFailed() => MemberResponse(
-      success: false,
-      id: "",
-      type: "",
-      memberId: "",
-      title: "",
-      firstName: "",
-      lastName: "",
-      fullName: "",
-      status: "",
-      vipLevel: 0,
-      registrationDate: "",
-      renewalDate: "",
-      validUntil: "",
-      address: "",
-      phone: "",
-      fax: "",
-      contact: "",
-      email: "",
-      birthday: "",
-      active: "",
-      photo: "",
-      photoUrl: "",
-      userId: "",
-      tanggal: "",
-      jam: "");
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -138,6 +108,3 @@ class MemberResponse {
 
 MemberResponse memberResponseFromJson(String str) =>
     MemberResponse.fromJson(json.decode(str));
-
-MemberResponse memberResponseFromJsonFailed() =>
-    MemberResponse.fromJsonFailed();

@@ -20,7 +20,7 @@ class MeRepository {
 
     final response = await network.getRequest(url);
 
-    return meResponseFromJson(response.body);
+    return meResponseSuccessFromJson(response.body);
   }
 
   Future<bool> setMe(MeResponse data) async {
@@ -31,12 +31,16 @@ class MeRepository {
     return meResponseFromJsonList(await Cache.getCache(key: 'me'));
   }
 
-  Future<dynamic> cekToken() async {
+  Future<MeResponse> cekToken() async {
     var url = urlApi + "/auth/me";
 
     final response = await network.getRequest(url);
 
-    return response.statusCode;
+    if (response.statusCode == 200) {
+      return meResponseSuccessFromJson(response.body);
+    } else {
+      return meResponseFailedFromJson(response.body);
+    }
   }
 
   Future<DefaultResponse> updatePassword(UpdatePasswordRequest request) async {

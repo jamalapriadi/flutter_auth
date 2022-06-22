@@ -73,7 +73,8 @@ class _ScanQRState extends State<ScanQR> {
       });
 
       if (result != null) {
-        memberCubit.getMember(result!.rawContent.toString());
+        // memberCubit.getMember(result!.rawContent.toString());
+        memberCubit.scanMember(result!.rawContent.toString());
       }
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.cameraAccessDenied) {
@@ -107,15 +108,15 @@ class _ScanQRState extends State<ScanQR> {
               if (state is GetMemberState) {
                 userId = state.memberResponse.userId.toString();
                 memberId = state.memberResponse.memberId.toString();
-                if (state.memberResponse.success == true) {
-                  if (state.memberResponse.active == 'Y') {
-                    _buildActiveMember(state);
-                  } else {
-                    _buildNonActiveMember(state);
-                  }
-                } else {
-                  _buildUserNotFound();
-                }
+                // if (state.memberResponse.success == true) {
+                //   if (state.memberResponse.active == 'Y') {
+                //     _buildActiveMember(state);
+                //   } else {
+                //     _buildNonActiveMember(state);
+                //   }
+                // } else {
+                //   _buildUserNotFound();
+                // }
               } else if (state is LoadingGetMemberState) {
                 const LoadingWidget();
               }
@@ -124,17 +125,20 @@ class _ScanQRState extends State<ScanQR> {
               children: [
                 BlocBuilder<MemberCubit, MemberState>(
                   builder: (context, state) {
-                    if (state is GetMemberState) {
-                      userId = state.memberResponse.userId.toString();
-                      memberId = state.memberResponse.memberId.toString();
-                      if (state.memberResponse.success == true) {
-                        if (state.memberResponse.active == 'Y') {
-                          return _buildActiveMember(state);
+                    if (state is GetScanMemberState) {
+                      if (state.scanMemberResponse.success == true) {
+                        if (state.scanMemberResponse.active == 'Y') {
+                          userId = state.scanMemberResponse.userId.toString();
+                          memberId =
+                              state.scanMemberResponse.memberId.toString();
+
+                          return _buildActiveMember(state.scanMemberResponse);
                         } else {
-                          return _buildNonActiveMember(state);
+                          return _buildNonActiveMember(
+                              state.scanMemberResponse);
                         }
                       } else {
-                        return _buildUserNotFound();
+                        return _buildUserNotFound(state.scanMemberResponse);
                       }
                     } else if (state is LoadingGetMemberState) {
                       return const Center(
@@ -153,7 +157,7 @@ class _ScanQRState extends State<ScanQR> {
     );
   }
 
-  Widget _buildActiveMember(state) {
+  Widget _buildActiveMember(member) {
     return BlocProvider<CheckinCubit>(
       create: (context) => checkinCubit,
       child: BlocListener<CheckinCubit, CheckinState>(
@@ -305,8 +309,7 @@ class _ScanQRState extends State<ScanQR> {
                                         style: TextStyle(
                                             color: Warna.abu,
                                             fontWeight: FontWeight.bold)),
-                                    Text(state.memberResponse.fullName
-                                        .toString())
+                                    Text(member.fullName.toString())
                                   ],
                                 ),
                               ),
@@ -326,10 +329,9 @@ class _ScanQRState extends State<ScanQR> {
                                         style: TextStyle(
                                             color: Warna.abu,
                                             fontWeight: FontWeight.bold)),
-                                    Text(state.memberResponse.tanggal
-                                            .toString() +
+                                    Text(member.tanggal.toString() +
                                         ", " +
-                                        state.memberResponse.jam.toString() +
+                                        member.jam.toString() +
                                         " WIB")
                                   ],
                                 ),
@@ -434,7 +436,7 @@ class _ScanQRState extends State<ScanQR> {
     );
   }
 
-  Widget _buildNonActiveMember(state) {
+  Widget _buildNonActiveMember(member) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -541,7 +543,7 @@ class _ScanQRState extends State<ScanQR> {
                                     style: TextStyle(
                                         color: Warna.abu,
                                         fontWeight: FontWeight.bold)),
-                                Text(state.memberResponse.fullName.toString())
+                                Text(member.fullName.toString())
                               ],
                             ),
                           ),
@@ -552,8 +554,7 @@ class _ScanQRState extends State<ScanQR> {
                               children: [
                                 Text(
                                   "Masa Berlaku kartu anda habis pada tanggal : " +
-                                      state.memberResponse.validUntil
-                                          .toString(),
+                                      member.validUntil.toString(),
                                   style: TextStyle(
                                       color: Warna.abu,
                                       fontWeight: FontWeight.bold),
@@ -611,7 +612,7 @@ class _ScanQRState extends State<ScanQR> {
     );
   }
 
-  Widget _buildUserNotFound() {
+  Widget _buildUserNotFound(result) {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -714,12 +715,13 @@ class _ScanQRState extends State<ScanQR> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("User Not Found",
+                                Text(result.message.toString(),
                                     style: TextStyle(
                                         color: Warna.abu,
                                         fontWeight: FontWeight.bold)),
-                                const Text(
-                                    "Member ID yang anda cari tidak ditemukan")
+                                // Text(
+                                //     "Member ID yang anda cari tidak ditemukan")
+                                Text(result.message.toString())
                               ],
                             ),
                           ),

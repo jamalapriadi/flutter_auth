@@ -16,4 +16,18 @@ class MemberCubit extends Cubit<MemberState> {
       emit(GetMemberState(resp));
     });
   }
+
+  void scanMember(String id) async {
+    emit(LoadingGetMemberState());
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    memberRepository.scanMemberById(id).then((resp) async {
+      // if (resp.success == true) {
+
+      // }
+
+      emit(GetScanMemberState(resp));
+    });
+  }
 }
