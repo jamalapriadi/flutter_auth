@@ -74,7 +74,15 @@ class _ScanQRState extends State<ScanQR> {
 
       if (result != null) {
         // memberCubit.getMember(result!.rawContent.toString());
-        memberCubit.scanMember(result!.rawContent.toString());
+
+        if (result!.format.toString() == "unknown") {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const Home()));
+        } else {
+          memberCubit.scanMember(result!.rawContent.toString());
+        }
       }
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.cameraAccessDenied) {
@@ -157,6 +165,24 @@ class _ScanQRState extends State<ScanQR> {
     );
   }
 
+  Widget imageDialog(path) {
+    return Dialog(
+      // backgroundColor: Colors.transparent,
+      // elevation: 0,
+      child: InteractiveViewer(
+        panEnabled: false, // Set it to false
+        boundaryMargin: EdgeInsets.all(100),
+        minScale: 0.5,
+        maxScale: 2,
+        child: Image.network(
+          '$path',
+          fit: BoxFit.contain,
+          width: 250,
+        ),
+      ),
+    );
+  }
+
   Widget _buildActiveMember(member) {
     return BlocProvider<CheckinCubit>(
       create: (context) => checkinCubit,
@@ -217,10 +243,24 @@ class _ScanQRState extends State<ScanQR> {
                           child: Container(
                             height: 126,
                             alignment: Alignment.center,
-                            child: Image.asset(
-                              "assets/img/user_icon.png",
-                              fit: BoxFit.contain,
-                              width: 210,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) => imageDialog(
+                                        member.photoUrl.toString()));
+                              },
+                              child: InteractiveViewer(
+                                panEnabled: false, // Set it to false
+                                boundaryMargin: EdgeInsets.all(100),
+                                minScale: 0.5,
+                                maxScale: 2,
+                                child: Image.network(
+                                  member.photoUrl.toString(),
+                                  fit: BoxFit.contain,
+                                  width: 210,
+                                ),
+                              ),
                             ),
                           ),
                         ),

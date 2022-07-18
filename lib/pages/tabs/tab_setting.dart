@@ -6,6 +6,7 @@ import 'package:hsp_gate/cubit/profile/profile_state.dart';
 import 'package:hsp_gate/models/auth/me/me_response.dart';
 import 'package:hsp_gate/pages/profile/change_password.dart';
 import 'package:hsp_gate/pages/profile/change_profile.dart';
+import 'package:hsp_gate/pages/regulation.dart';
 
 import '../../helpers/constant.dart';
 
@@ -26,6 +27,24 @@ class _TabSettingState extends State<TabSetting> {
   void initState() {
     profileCubit.getMe();
     super.initState();
+  }
+
+  Widget imageDialog(path) {
+    return Dialog(
+      // backgroundColor: Colors.transparent,
+      // elevation: 0,
+      child: InteractiveViewer(
+        panEnabled: false, // Set it to false
+        boundaryMargin: EdgeInsets.all(100),
+        minScale: 0.5,
+        maxScale: 2,
+        child: Image.network(
+          '$path',
+          fit: BoxFit.contain,
+          width: 250,
+        ),
+      ),
+    );
   }
 
   @override
@@ -62,12 +81,27 @@ class _TabSettingState extends State<TabSetting> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                          state.meResponse.profilePictureUrl
-                                              .toString(),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await showDialog(
+                                              context: context,
+                                              builder: (_) => imageDialog(state
+                                                  .meResponse.profilePictureUrl
+                                                  .toString()));
+                                        },
+                                        child: InteractiveViewer(
+                                          panEnabled: false, // Set it to false
+                                          boundaryMargin: EdgeInsets.all(100),
+                                          minScale: 0.5,
+                                          maxScale: 2,
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                              state.meResponse.profilePictureUrl
+                                                  .toString(),
+                                            ),
+                                            radius: 50.0,
+                                          ),
                                         ),
-                                        radius: 50.0,
                                       ),
                                       const SizedBox(
                                         height: 10.0,
@@ -112,6 +146,26 @@ class _TabSettingState extends State<TabSetting> {
             ),
             const SizedBox(
               height: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Card(
+                child: ListTile(
+                  trailing: const Icon(Icons.arrow_right),
+                  title: const Text("REGULATION"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Regulation(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),

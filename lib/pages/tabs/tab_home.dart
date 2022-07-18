@@ -12,6 +12,7 @@ import 'package:hsp_gate/helpers/constant.dart';
 import 'package:hsp_gate/models/auth/me/me_response.dart';
 import 'package:hsp_gate/pages/all_user_checkin.dart';
 import 'package:hsp_gate/pages/scan/cek_scan.dart';
+import 'package:hsp_gate/pages/scan/scan_manual.dart';
 
 import '../../cubit/checkin/checkin_state.dart';
 
@@ -66,7 +67,7 @@ class _TabHomeState extends State<TabHome> {
               ),
             ),
             Container(
-              height: 40,
+              height: 70,
               color: Warna.putih,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -74,12 +75,39 @@ class _TabHomeState extends State<TabHome> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      "History",
-                      style: TextStyle(
-                          color: Warna.hitam,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "History",
+                            style: TextStyle(
+                                color: Warna.hitam,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            color: Warna.hijau,
+                            child: TextButton.icon(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              const ScanManual()));
+                                },
+                                icon: Icon(
+                                  Icons.search,
+                                  color: Warna.putih,
+                                ),
+                                label: Text(
+                                  "Cari Member",
+                                  style: TextStyle(color: Warna.putih),
+                                )),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Divider(
