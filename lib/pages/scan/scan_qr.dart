@@ -12,6 +12,7 @@ import 'package:hsp_gate/cubit/merchant/merchant_cubit.dart';
 import 'package:hsp_gate/cubit/merchant/merchant_state.dart';
 import 'package:hsp_gate/helpers/constant.dart';
 import 'package:hsp_gate/models/checkin/checkin_request.dart';
+import 'package:hsp_gate/models/merchant/merchant_response.dart';
 import 'package:hsp_gate/pages/home.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -32,6 +33,8 @@ class _ScanQRState extends State<ScanQR> {
   final memberCubit = MemberCubit();
   final merchantCubit = MerchantCubit();
   final checkinCubit = CheckinCubit();
+
+  MerchantResponse merchant = MerchantResponse();
 
   String? merchantId;
   String? userId;
@@ -81,7 +84,10 @@ class _ScanQRState extends State<ScanQR> {
               MaterialPageRoute(
                   builder: (BuildContext context) => const Home()));
         } else {
-          memberCubit.scanMember(result!.rawContent.toString());
+          var qr = result!.rawContent.toString() +
+              '&merchant=' +
+              merchant.id.toString();
+          memberCubit.scanMember(qr.toString());
         }
       }
     } on PlatformException catch (ex) {
@@ -153,7 +159,7 @@ class _ScanQRState extends State<ScanQR> {
                         child: LoadingWidget(),
                       );
                     } else {
-                      return const LoadingWidget();
+                      return _buildNamaMerchant();
                     }
                   },
                 )
@@ -332,7 +338,22 @@ class _ScanQRState extends State<ScanQR> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: [
-                              _buildNamaMerchant(),
+                              ListTile(
+                                leading: const Icon(Icons.location_on_outlined),
+                                title: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Lokasi Check-In",
+                                      style: TextStyle(
+                                          color: Warna.abu,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(merchant.nama.toString())
+                                  ],
+                                ),
+                              ),
                               Divider(
                                 color: Warna.abumuda,
                                 thickness: 2,
@@ -396,7 +417,7 @@ class _ScanQRState extends State<ScanQR> {
                             CheckinRequest request = CheckinRequest(
                                 user: userId.toString(),
                                 member: memberId.toString(),
-                                merchant: merchantId.toString());
+                                merchant: merchant.id.toString());
 
                             checkinCubit.checkIn(request);
                           },
@@ -444,34 +465,22 @@ class _ScanQRState extends State<ScanQR> {
   }
 
   Widget _buildNamaMerchant() {
-    return ListTile(
-      leading: const Icon(Icons.location_on_outlined),
-      title: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Lokasi Check-In",
-            style: TextStyle(color: Warna.abu, fontWeight: FontWeight.bold),
-          ),
-          BlocProvider<MerchantCubit>(
-            create: (context) => merchantCubit,
-            child: BlocListener<MerchantCubit, MerchantState>(
-              listener: (context, state) {},
-              child: BlocBuilder<MerchantCubit, MerchantState>(
-                builder: (context, state) {
-                  if (state is GetMerchantByIdState) {
-                    merchantId = state.merchantResponse.id.toString();
+    return BlocProvider<MerchantCubit>(
+      create: (context) => merchantCubit,
+      child: BlocListener<MerchantCubit, MerchantState>(
+        listener: (context, state) {},
+        child: BlocBuilder<MerchantCubit, MerchantState>(
+          builder: (context, state) {
+            if (state is GetMerchantByIdState) {
+              merchant = state.merchantResponse;
+              merchantId = state.merchantResponse.id.toString();
 
-                    return Text(state.merchantResponse.nama.toString());
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-            ),
-          )
-        ],
+              return const LoadingWidget();
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

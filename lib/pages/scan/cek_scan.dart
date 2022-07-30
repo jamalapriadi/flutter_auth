@@ -6,7 +6,10 @@ import 'package:hsp_gate/cubit/checkin/checkin_cubit.dart';
 import 'package:hsp_gate/cubit/checkin/checkin_state.dart';
 import 'package:hsp_gate/cubit/member/member_cubit.dart';
 import 'package:hsp_gate/cubit/member/member_state.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_cubit.dart';
+import 'package:hsp_gate/cubit/merchant/merchant_state.dart';
 import 'package:hsp_gate/helpers/constant.dart';
+import 'package:hsp_gate/models/merchant/merchant_response.dart';
 import 'package:hsp_gate/pages/home.dart';
 
 import '../../models/checkin/checkin_request.dart';
@@ -21,10 +24,13 @@ class CekScan extends StatefulWidget {
 }
 
 class _CekScanState extends State<CekScan> {
+  final merchantCubit = MerchantCubit();
   final memberCubit = MemberCubit();
   final checkinCubit = CheckinCubit();
 
   final formState = GlobalKey<FormState>();
+
+  MerchantResponse merchant = MerchantResponse();
 
   String? merchantId;
   String? userId;
@@ -32,6 +38,7 @@ class _CekScanState extends State<CekScan> {
 
   @override
   void initState() {
+    merchantCubit.getMerchantById();
     memberCubit.scanMember(widget.q.toString());
   }
 
@@ -261,6 +268,7 @@ class _CekScanState extends State<CekScan> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: [
+                              _buildMerchant(),
                               Divider(
                                 color: Warna.abumuda,
                                 thickness: 2,
@@ -324,7 +332,7 @@ class _CekScanState extends State<CekScan> {
                             CheckinRequest request = CheckinRequest(
                                 user: userId.toString(),
                                 member: memberId.toString(),
-                                merchant: merchantId.toString());
+                                merchant: merchant.id.toString().toString());
 
                             checkinCubit.checkIn(request);
                           },
@@ -707,6 +715,39 @@ class _CekScanState extends State<CekScan> {
           ),
         ))
       ],
+    );
+  }
+
+  Widget _buildMerchant() {
+    return BlocProvider<MerchantCubit>(
+      create: (context) => merchantCubit,
+      child: BlocListener<MerchantCubit, MerchantState>(
+        listener: (context, state) {},
+        child: BlocBuilder<MerchantCubit, MerchantState>(
+          builder: (context, state) {
+            if (state is GetMerchantByIdState) {
+              merchant = state.merchantResponse;
+              merchantId = state.merchantResponse.id.toString();
+
+              return ListTile(
+                leading: const Icon(Icons.location_on_outlined),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Lokasi Check-in",
+                        style: TextStyle(
+                            color: Warna.abu, fontWeight: FontWeight.bold)),
+                    Text(state.merchantResponse.nama.toString())
+                  ],
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+      ),
     );
   }
 }

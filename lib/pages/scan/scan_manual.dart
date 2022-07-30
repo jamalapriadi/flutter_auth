@@ -7,7 +7,8 @@ import 'package:hsp_gate/pages/scan/cek_scan.dart';
 import 'package:intl/intl.dart';
 
 class ScanManual extends StatefulWidget {
-  const ScanManual({Key? key}) : super(key: key);
+  String? merchantId;
+  ScanManual({Key? key, this.merchantId}) : super(key: key);
 
   @override
   State<ScanManual> createState() => _ScanManualState();
@@ -78,7 +79,8 @@ class _ScanManualState extends State<ScanManual> {
               var q = DateFormat("yyyy-MM-dd").format(DateTime.now()) +
                   "?member=" +
                   _nameController.text.trim().toString() +
-                  "&source=apps";
+                  "&source=apps&merchant=" +
+                  widget.merchantId.toString();
 
               Navigator.pushReplacement(
                   context,

@@ -10,6 +10,7 @@ import 'package:hsp_gate/cubit/profile/profile_cubit.dart';
 import 'package:hsp_gate/cubit/profile/profile_state.dart';
 import 'package:hsp_gate/helpers/constant.dart';
 import 'package:hsp_gate/models/auth/me/me_response.dart';
+import 'package:hsp_gate/models/merchant/merchant_response.dart';
 import 'package:hsp_gate/pages/all_user_checkin.dart';
 import 'package:hsp_gate/pages/scan/cek_scan.dart';
 import 'package:hsp_gate/pages/scan/scan_manual.dart';
@@ -28,6 +29,8 @@ class _TabHomeState extends State<TabHome> {
   MerchantCubit merchantCubit = MerchantCubit();
   MeResponse meResponse = MeResponse();
   CheckinCubit checkinCubit = CheckinCubit();
+
+  MerchantResponse merchant = MerchantResponse();
 
   @override
   void initState() {
@@ -95,7 +98,10 @@ class _TabHomeState extends State<TabHome> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              const ScanManual()));
+                                              ScanManual(
+                                                merchantId:
+                                                    merchant.id.toString(),
+                                              )));
                                 },
                                 icon: Icon(
                                   Icons.search,
@@ -313,6 +319,8 @@ class _TabHomeState extends State<TabHome> {
         child: BlocBuilder<MerchantCubit, MerchantState>(
           builder: (context, state) {
             if (state is GetMerchantByIdState) {
+              merchant = state.merchantResponse;
+
               return Row(
                 children: [
                   Expanded(
